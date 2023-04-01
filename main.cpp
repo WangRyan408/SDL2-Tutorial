@@ -7,7 +7,7 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-char* SDL_GetBasePath(void);
+
 
 //char basePath = SDL_GetBasePath();
 
@@ -66,10 +66,10 @@ bool loadMedia()
     bool success = true;
 
     //Load splash image
-    gHelloWorld = SDL_LoadBMP("./proxy_image.bmp");
+    gHelloWorld = SDL_LoadBMP("hello_world.bmp");
     if( gHelloWorld == NULL )
     {
-        printf( "Unable to load image %s! SDL Error: %s\n", "proxy_image.bmp", SDL_GetError() );
+        printf( "Unable to load image %s! SDL Error: %s\n", "hello_world.bmp", SDL_GetError() );
         success = false;
     }
 
@@ -106,14 +106,22 @@ int main( int argc, char* args[] )
         }
         else
         {
-            //Apply the image
+           
+               //Hack to get window to stay up
+            SDL_Event e; bool quit = false; //( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+            while (!quit) {
+                while (SDL_PollEvent(&e) != 0) {
+                    if (e.type == SDL_QUIT) {
+                        quit = true;
+                    }
+                }
+                 //Apply the image
             SDL_BlitSurface( gHelloWorld, NULL, gScreenSurface, NULL );
 
             //Update the surface
             SDL_UpdateWindowSurface( gWindow );
 
-               //Hack to get window to stay up
-            SDL_Event e; bool quit = false; while( quit == false ){ while( SDL_PollEvent( &e ) ){ if( e.type == SDL_QUIT ) quit = true; } }
+            }
         }
     }
 
